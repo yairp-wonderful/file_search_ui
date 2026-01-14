@@ -8,7 +8,7 @@ from app.gemini_client import GeminiClient
 bp = Blueprint('main', __name__)
 
 # Allowed file extensions
-ALLOWED_EXTENSIONS = {'pdf', 'txt', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx', 'csv', 'json', 'xml', 'html'}
+ALLOWED_EXTENSIONS = {'pdf', 'txt', 'md', 'markdown', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx', 'csv', 'json', 'xml', 'html'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

@@ -338,6 +338,8 @@ function getFileIcon(fileName) {
     const iconMap = {
         'pdf': '📄',
         'txt': '📝',
+        'md': '📝',
+        'markdown': '📝',
         'doc': '📘',
         'docx': '📘',
         'xls': '📊',
@@ -907,7 +909,7 @@ function handleFileSelectForStore(e) {
 }
 
 async function uploadToFileSearchStore(file, storeName) {
-    const validExtensions = ['pdf', 'txt', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx', 'csv', 'json', 'xml', 'html'];
+    const validExtensions = ['pdf', 'txt', 'md', 'markdown', 'doc', 'docx', 'xlsx', 'xls', 'ppt', 'pptx', 'csv', 'json', 'xml', 'html'];
     const ext = file.name.split('.').pop().toLowerCase();
 
     if (!validExtensions.includes(ext)) {

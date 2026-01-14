@@ -21,7 +21,7 @@ A local, self-hosted web app for managing Gemini File Search stores: upload file
 
 ## Supported file types
 
-`pdf`, `txt`, `doc`, `docx`, `xlsx`, `xls`, `ppt`, `pptx`, `csv`, `json`, `xml`, `html`
+`pdf`, `txt`, `md`, `markdown`, `doc`, `docx`, `xlsx`, `xls`, `ppt`, `pptx`, `csv`, `json`, `xml`, `html`
 
 Max upload size is 100MB per file (see `app/__init__.py`).
 
