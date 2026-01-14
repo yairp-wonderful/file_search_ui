@@ -34,8 +34,8 @@ Max upload size is 100MB per file (see `app/__init__.py`).
 
 1. Clone the repo
    ```bash
-   git clone <repository-url>
-   cd gemini-filesearch-ui
+   git clone https://github.com/yairp-wonderful/file_search_ui.git
+   cd file_search_ui
    ```
 
 2. Create and activate a virtual environment
@@ -50,10 +50,10 @@ Max upload size is 100MB per file (see `app/__init__.py`).
    ```
 
 4. Create a `.env` file in the project root
-   ```env
-   GEMINI_API_KEY=your-api-key-or-bearer-token
-   FLASK_DEBUG=False
+   ```bash
+   cp .env.example .env
    ```
+   Edit `.env` and add your `GEMINI_API_KEY`.
 
 5. Run the app
    ```bash
