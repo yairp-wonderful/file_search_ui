@@ -19,6 +19,9 @@ UPLOAD_BASE_URL = "https://generativelanguage.googleapis.com/upload/v1beta"
 DEFAULT_TIMEOUT = 30
 UPLOAD_TIMEOUT = 120
 
+mimetypes.add_type("text/plain", ".md")
+mimetypes.add_type("text/plain", ".markdown")
+
 
 def _as_int(value: Any, default: int = 0) -> int:
     try:
@@ -769,6 +772,9 @@ class GeminiClient:
             upload_url = f"{UPLOAD_BASE_URL}/{store_name}:uploadToFileSearchStore"
             file_name = display_name or os.path.basename(file_path)
             mime_type = mimetypes.guess_type(file_name)[0] or "application/octet-stream"
+            extension = os.path.splitext(file_name)[1].lower()
+            if extension in {".md", ".markdown"}:
+                mime_type = "text/plain"
             metadata = {"displayName": file_name}
 
             with open(file_path, "rb") as file_handle:
