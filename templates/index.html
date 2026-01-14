@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini File Search - Modern File Search Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 10V22M10 16H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Gemini Search</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="upload">
+                    <span class="icon">📤</span>
+                    <span class="label">File Upload</span>
+                </button>
+                <button class="nav-item" data-tab="files">
+                    <span class="icon">📁</span>
+                    <span class="label">My Files</span>
+                </button>
+                <button class="nav-item" data-tab="stores">
+                    <span class="icon">💾</span>
+                    <span class="label">FileStore</span>
+                </button>
+                <button class="nav-item" data-tab="search">
+                    <span class="icon">🔍</span>
+                    <span class="label">Chat Search</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="version">v1.0.0</div>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <!-- File Upload Tab -->
+            <section id="upload" class="tab-content active">
+                <div class="section-header">
+                    <h1>File Upload</h1>
+                    <p>Upload files from your computer to Gemini</p>
+                </div>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <h3>Drag files here or click to select</h3>
+                    <p>Supported formats: PDF, Word, Excel, PPT, TXT, CSV, and more</p>
+                    <input type="file" id="fileInput" style="display: none;" accept=".pdf,.txt,.doc,.docx,.xlsx,.xls,.ppt,.pptx,.csv,.json,.xml,.html" multiple>
+                </div>
+
+                <div id="uploadProgress" class="upload-progress" style="display: none;">
+                    <div class="progress-item">
+                        <span id="uploadFileName"></span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="uploadStatus" class="upload-status"></div>
+            </section>
+
+            <!-- My Files Tab -->
+            <section id="files" class="tab-content">
+                <div class="section-header">
+                    <h1>Uploaded Files</h1>
+                    <p>View all files in your temporary storage</p>
+                    <button class="btn btn-secondary" id="refreshFilesBtn">Refresh</button>
+                </div>
+
+                <!-- Import to FileStore Panel -->
+                <div id="importPanel" class="import-panel" style="display: none;">
+                    <div class="import-header">
+                        <h3>Move Selected Files to FileStore</h3>
+                        <button class="btn btn-secondary btn-sm" id="cancelImportBtn">Cancel</button>
+                    </div>
+                    <div class="import-controls">
+                        <select id="storeSelectForImport" class="input-field">
+                            <option value="">Select FileStore...</option>
+                        </select>
+                        <button class="btn btn-primary" id="confirmImportBtn">Move</button>
+                    </div>
+                    <div id="importStatus" class="upload-status"></div>
+                </div>
+
+                <div id="filesList" class="files-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p>No uploaded files yet</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FileStore Tab -->
+            <section id="stores" class="tab-content">
+                <div class="section-header">
+                    <h1>FileStore Management</h1>
+                    <p>Manage your FileStores and persistent document storage</p>
+                </div>
+
+                <!-- Direct Upload to FileStore -->
+                <div class="upload-to-store-section">
+                    <div class="subsection-header">
+                        <h3>Upload Files to FileStore</h3>
+                    </div>
+                    <div class="upload-to-store-form">
+                        <select id="storeSelectForUpload" class="input-field">
+                            <option value="">Select FileStore...</option>
+                        </select>
+                        <div class="upload-area-small" id="uploadToStoreArea">
+                            <div class="upload-icon">📄</div>
+                            <p>Drag files here or click to select</p>
+                            <input type="file" id="fileInputForStore" style="display: none;" accept=".pdf,.txt,.doc,.docx,.xlsx,.xls,.ppt,.pptx,.csv,.json,.xml,.html" multiple>
+                        </div>
+                        <div id="uploadToStoreProgress" class="upload-progress" style="display: none;">
+                            <div class="progress-item">
+                                <span id="uploadToStoreFileName"></span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFillStore"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="uploadToStoreStatus" class="upload-status"></div>
+                    </div>
+                </div>
+
+                <div id="storesList" class="stores-container">
+                    <div class="empty-state">
+                        <div class="empty-icon">💾</div>
+                        <p>Loading FileStores...</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Documents</div>
+                        <div class="stat-value" id="totalFiles">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Storage</div>
+                        <div class="stat-value" id="totalSize">0 B</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat Search Tab -->
+            <section id="search" class="tab-content">
+                <div class="section-header">
+                    <h1>Chat Search</h1>
+                    <p>Search your uploaded files with natural language questions</p>
+                </div>
+
+                <div class="search-container">
+                    <div class="search-panel">
+                        <h3>Select FileStore to Search</h3>
+                        <div id="fileCheckboxList" class="file-checkbox-list">
+                            <div class="empty-state">
+                                <p>No FileStores available</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="selectAllBtn">Select All</button>
+                    </div>
+
+                    <div class="query-panel">
+                        <h3>Ask a Question</h3>
+                        <textarea id="searchQuery" placeholder="Enter your question here. Example: What are the main topics in this document?" rows="6"></textarea>
+                        <div class="metadata-filter">
+                            <label for="metadataFilter">Metadata filter (expression)</label>
+                            <textarea id="metadataFilter" class="input-field metadata-filter-input" placeholder='category = "payroll"' rows="3"></textarea>
+                            <div class="metadata-hint">Optional. Examples: category = "payroll"; tags = "hr"; year = 2024.</div>
+                        </div>
+                        <button class="btn btn-primary" id="searchBtn" style="width: 100%; margin-top: 10px;">Search</button>
+                    </div>
+                </div>
+
+                <div id="searchResult" class="search-result" style="display: none;">
+                    <div class="result-header">
+                        <h3>Search Results</h3>
+                        <button class="btn btn-secondary btn-sm" id="closeResultBtn">Close</button>
+                    </div>
+                    <div id="resultContent" class="result-content"></div>
+                </div>
+
+                <div id="searchLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Searching...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
