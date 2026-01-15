@@ -696,9 +696,13 @@ class GeminiClient:
                     "message": "File imported successfully"
                 }
 
-            payload: Dict[str, Any] = {"fileId": file_id}
+            file_name = file_id
+            if not file_name.startswith("files/"):
+                file_name = f"files/{file_name}"
+
+            payload: Dict[str, Any] = {"fileName": file_name}
             if metadata:
-                payload["metadata"] = metadata
+                payload["customMetadata"] = metadata
 
             endpoints = [
                 f"{BASE_URL}/{store_name}:importFile",
